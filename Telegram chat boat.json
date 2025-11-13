@@ -1,0 +1,284 @@
+{
+  "name": "Telegram chat boat",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6fed1f7c-ae55-4d99-993e-55052fbff943",
+              "leftValue": "={{ $json['Payment Status'] }}",
+              "rightValue": "Paid",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -176,
+        32
+      ],
+      "id": "9ca9f83b-d890-4d62-9a8f-f491e759095f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Payment Status'] }}",
+                    "rightValue": "Paid",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7598ee3f-a9e1-49d2-910c-d4cf44d47798"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "479aac45-7b05-46ca-b2f1-8ce32dde8e29",
+                    "leftValue": "={{ $json['Payment Status'] }}",
+                    "rightValue": "Unpaid",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "32dec5e3-ea2b-4660-96b0-3bfb14219ec3",
+                    "leftValue": "={{ $json['Payment Status'] }}",
+                    "rightValue": "Overdue",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        48,
+        0
+      ],
+      "id": "19e38dd7-d654-453c-ae7f-fedb840aabf3",
+      "name": "Switch1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "sendTo": "=veosdrnwaz@gmail.com",
+        "subject": "crupt invoices",
+        "message": "=in ko check kr len  {{ $json.row_number }}\n{{ $json['Customer Name'] }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        272,
+        128
+      ],
+      "id": "c4abe263-e33d-4fa6-9706-5b647b111745",
+      "name": "Send a message1",
+      "webhookId": "3990d9a6-1be6-4dc6-a9fc-76bfb0cf77d7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "p3fCmCyvNeuf1ZZu",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['Customer Email'] }}",
+        "subject": "Hi ",
+        "emailType": "text",
+        "message": "done",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        272,
+        -64
+      ],
+      "id": "7209345a-31e2-4401-b0ba-75e5d74b75e7",
+      "name": "Send a message",
+      "webhookId": "9b99fa80-cddd-4c9b-952c-fc0501de18c8",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "p3fCmCyvNeuf1ZZu",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1DJ_RdKMmxAZiHgZ_67tgT20B3czOf7m8Ns04shrq2Jc",
+          "mode": "list",
+          "cachedResultName": "Invoices Data (Practice Ke Liye)",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DJ_RdKMmxAZiHgZ_67tgT20B3czOf7m8Ns04shrq2Jc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DJ_RdKMmxAZiHgZ_67tgT20B3czOf7m8Ns04shrq2Jc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        32
+      ],
+      "id": "94f643fe-5d97-4727-943f-6141fdc1699e",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "m3KtIyuzHDmvMw7e",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        32
+      ],
+      "id": "68d130c7-350f-4060-a5f0-ec230d51f149",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "69057fe8-2de9-4cc4-bf9d-9f3c80593825",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "90537ddef8e23a6d5af8eade5c6d9c1da1478fa67dbdf75c7862bf831c8cd701"
+  },
+  "id": "oipNdL8SDm61Xees",
+  "tags": []
+}
